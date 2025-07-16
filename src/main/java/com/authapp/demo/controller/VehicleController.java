@@ -5,6 +5,9 @@ import com.authapp.demo.entity.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestHeader;
+import com.authapp.demo.util.JwtUtil;
+import io.jsonwebtoken.Claims;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,14 +35,18 @@ public class VehicleController {
     }
 
     @PostMapping
-    public Vehicle createVehicle(@RequestBody Vehicle vehicle) {
-        // TODO: Allow only admin to create
-        return vehicleRepository.save(vehicle);
+    public ResponseEntity<?> createVehicle(@RequestBody Vehicle vehicle, @RequestHeader("Authorization") String authHeader) {
+        if (!isAdmin(authHeader)) {
+            return ResponseEntity.status(403).body("Admin access required");
+        }
+        return ResponseEntity.ok(vehicleRepository.save(vehicle));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Vehicle> updateVehicle(@PathVariable Long id, @RequestBody Vehicle vehicleDetails) {
-        // TODO: Allow only admin to update
+    public ResponseEntity<?> updateVehicle(@PathVariable Long id, @RequestBody Vehicle vehicleDetails, @RequestHeader("Authorization") String authHeader) {
+        if (!isAdmin(authHeader)) {
+            return ResponseEntity.status(403).body("Admin access required");
+        }
         return vehicleRepository.findById(id)
                 .map(vehicle -> {
                     vehicle.setPlate(vehicleDetails.getPlate());
@@ -51,13 +58,19 @@ public class VehicleController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteVehicle(@PathVariable Long id) {
-        // TODO: Allow only admin to delete
+    public ResponseEntity<?> deleteVehicle(@PathVariable Long id, @RequestHeader("Authorization") String authHeader) {
+        if (!isAdmin(authHeader)) {
+            return ResponseEntity.status(403).body("Admin access required");
+        }
         if (vehicleRepository.existsById(id)) {
             vehicleRepository.deleteById(id);
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    private boolean isAdmin(String authHeader) {
+        return JwtUtil.isAdmin(authHeader);
     }
 } 

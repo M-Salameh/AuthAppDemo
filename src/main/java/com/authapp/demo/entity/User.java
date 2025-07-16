@@ -1,7 +1,12 @@
 package com.authapp.demo.entity;
 
+import com.authapp.demo.util.VehicleSummarySerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.authapp.demo.util.UserSummarySerializer;
 import jakarta.persistence.*;
 import java.util.List;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 @Entity
 public class User {
@@ -16,10 +21,16 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    private String role; // e.g., "USER" or "ADMIN"
+    @Enumerated(EnumType.STRING)
+    private Role role; // ADMIN or USER
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonSerialize(contentUsing = VehicleSummarySerializer.class)
     private List<Vehicle> vehicles;
+
+    public enum Role {
+        ADMIN, USER
+    }
 
     // Getters and setters
     public Long getId() { return id; }
@@ -28,8 +39,8 @@ public class User {
     public void setUsername(String username) { this.username = username; }
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
-    public String getRole() { return role; }
-    public void setRole(String role) { this.role = role; }
+    public Role getRole() { return role; }
+    public void setRole(Role role) { this.role = role; }
     public List<Vehicle> getVehicles() { return vehicles; }
     public void setVehicles(List<Vehicle> vehicles) { this.vehicles = vehicles; }
 } 

@@ -1,5 +1,8 @@
 package com.authapp.demo.entity;
 
+import com.authapp.demo.util.UserSummarySerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.authapp.demo.util.VehicleSummarySerializer;
 import jakarta.persistence.*;
 
 @Entity
@@ -16,6 +19,7 @@ public class Vehicle {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonSerialize(using = UserSummarySerializer.class)
     private User user;
 
     // Getters and setters

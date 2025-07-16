@@ -1,21 +1,21 @@
-2025-07-16 12:02:33 [INFO ] [com.authapp.demo.DemoApplication] - Starting DemoApplication using Java 21.0.7 with PID 37179 (/home/mr_salameh/My-Disks/Work/Educational/Authorization-And-Authentication/demo/target/classes started by mr_salameh in /home/mr_salameh/My-Disks/Work/Educational/Authorization-And-Authentication/demo)
-2025-07-16 12:02:33 [INFO ] [com.authapp.demo.DemoApplication] - No active profile set, falling back to 1 default profile: "default"
-2025-07-16 12:02:34 [INFO ] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025-07-16 12:02:34 [INFO ] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] - Finished Spring Data repository scanning in 46 ms. Found 2 JPA repository interfaces.
-2025-07-16 12:02:34 [INFO ] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] - Tomcat initialized with port 8080 (http)
-2025-07-16 12:02:34 [INFO ] [org.apache.catalina.core.StandardService] - Starting service [Tomcat]
-2025-07-16 12:02:34 [INFO ] [org.apache.catalina.core.StandardEngine] - Starting Servlet engine: [Apache Tomcat/10.1.42]
-2025-07-16 12:02:34 [INFO ] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] - Initializing Spring embedded WebApplicationContext
-2025-07-16 12:02:34 [INFO ] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] - Root WebApplicationContext: initialization completed in 1228 ms
-2025-07-16 12:02:35 [INFO ] [org.hibernate.jpa.internal.util.LogHelper] - HHH000204: Processing PersistenceUnitInfo [name: default]
-2025-07-16 12:02:35 [INFO ] [org.hibernate.Version] - HHH000412: Hibernate ORM core version 6.6.18.Final
-2025-07-16 12:02:35 [INFO ] [org.hibernate.cache.internal.RegionFactoryInitiator] - HHH000026: Second-level cache disabled
-2025-07-16 12:02:35 [INFO ] [org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo] - No LoadTimeWeaver setup: ignoring JPA class transformer
-2025-07-16 12:02:35 [INFO ] [com.zaxxer.hikari.HikariDataSource] - HikariPool-1 - Starting...
-2025-07-16 12:02:35 [INFO ] [com.zaxxer.hikari.pool.HikariPool] - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6c6919ff
-2025-07-16 12:02:35 [INFO ] [com.zaxxer.hikari.HikariDataSource] - HikariPool-1 - Start completed.
-2025-07-16 12:02:35 [WARN ] [org.hibernate.orm.deprecation] - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2025-07-16 12:02:35 [INFO ] [org.hibernate.orm.connections.pooling] - HHH10001005: Database info:
+2025-07-16 16:50:42 [INFO ] [com.authapp.demo.DemoApplication] - Starting DemoApplication using Java 21.0.7 with PID 41624 (/home/mr_salameh/My-Disks/Work/Educational/Authorization-And-Authentication/demo/target/classes started by mr_salameh in /home/mr_salameh/My-Disks/Work/Educational/Authorization-And-Authentication/demo)
+2025-07-16 16:50:42 [INFO ] [com.authapp.demo.DemoApplication] - No active profile set, falling back to 1 default profile: "default"
+2025-07-16 16:50:43 [INFO ] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-07-16 16:50:44 [INFO ] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] - Finished Spring Data repository scanning in 68 ms. Found 2 JPA repository interfaces.
+2025-07-16 16:50:45 [INFO ] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] - Tomcat initialized with port 8080 (http)
+2025-07-16 16:50:45 [INFO ] [org.apache.catalina.core.StandardService] - Starting service [Tomcat]
+2025-07-16 16:50:45 [INFO ] [org.apache.catalina.core.StandardEngine] - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-07-16 16:50:45 [INFO ] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] - Initializing Spring embedded WebApplicationContext
+2025-07-16 16:50:45 [INFO ] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] - Root WebApplicationContext: initialization completed in 2760 ms
+2025-07-16 16:50:46 [INFO ] [org.hibernate.jpa.internal.util.LogHelper] - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-07-16 16:50:46 [INFO ] [org.hibernate.Version] - HHH000412: Hibernate ORM core version 6.6.18.Final
+2025-07-16 16:50:46 [INFO ] [org.hibernate.cache.internal.RegionFactoryInitiator] - HHH000026: Second-level cache disabled
+2025-07-16 16:50:46 [INFO ] [org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo] - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-07-16 16:50:47 [INFO ] [com.zaxxer.hikari.HikariDataSource] - HikariPool-1 - Starting...
+2025-07-16 16:50:47 [INFO ] [com.zaxxer.hikari.pool.HikariPool] - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3835d3fd
+2025-07-16 16:50:47 [INFO ] [com.zaxxer.hikari.HikariDataSource] - HikariPool-1 - Start completed.
+2025-07-16 16:50:47 [WARN ] [org.hibernate.orm.deprecation] - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-07-16 16:50:47 [INFO ] [org.hibernate.orm.connections.pooling] - HHH10001005: Database info:
 	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
 	Database driver: undefined/unknown
 	Database version: 8.0.42
@@ -23,165 +23,19 @@
 	Isolation level: undefined/unknown
 	Minimum pool size: undefined/unknown
 	Maximum pool size: undefined/unknown
-2025-07-16 12:02:36 [INFO ] [org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator] - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2025-07-16 12:02:36 [INFO ] [org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean] - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025-07-16 12:02:36 [WARN ] [org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration] - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2025-07-16 12:02:37 [INFO ] [org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver] - Exposing 1 endpoint beneath base path '/actuator'
-2025-07-16 12:02:37 [INFO ] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] - Tomcat started on port 8080 (http) with context path '/'
-2025-07-16 12:02:37 [INFO ] [com.authapp.demo.DemoApplication] - Started DemoApplication in 4.009 seconds (process running for 4.321)
-2025-07-16 12:02:48 [INFO ] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2025-07-16 12:02:48 [INFO ] [org.springframework.web.servlet.DispatcherServlet] - Initializing Servlet 'dispatcherServlet'
-2025-07-16 12:02:48 [INFO ] [org.springframework.web.servlet.DispatcherServlet] - Completed initialization in 2 ms
-2025-07-16 12:02:48 [INFO ] [com.authapp.demo.aop.LoggingAspect] - Endpoint called: UserController.createUser(..) with args: [com.authapp.demo.entity.User@652ff5da]
-2025-07-16 12:02:48 [WARN ] [org.hibernate.engine.jdbc.spi.SqlExceptionHelper] - SQL Error: 1062, SQLState: 23000
-2025-07-16 12:02:48 [ERROR] [org.hibernate.engine.jdbc.spi.SqlExceptionHelper] - Duplicate entry 'john' for key 'user.UKsb8bbouer5wak8vyiiy4pf2bx'
-2025-07-16 12:02:48 [ERROR] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/].[dispatcherServlet]] - Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: org.springframework.dao.DataIntegrityViolationException: could not execute statement [Duplicate entry 'john' for key 'user.UKsb8bbouer5wak8vyiiy4pf2bx'] [insert into user (password,role,username) values (?,?,?)]; SQL [insert into user (password,role,username) values (?,?,?)]; constraint [user.UKsb8bbouer5wak8vyiiy4pf2bx]] with root cause
-java.sql.SQLIntegrityConstraintViolationException: Duplicate entry 'john' for key 'user.UKsb8bbouer5wak8vyiiy4pf2bx'
-	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:109)
-	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:114)
-	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:990)
-	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1168)
-	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1103)
-	at com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1450)
-	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:1086)
-	at com.zaxxer.hikari.pool.ProxyPreparedStatement.executeUpdate(ProxyPreparedStatement.java:61)
-	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeUpdate(HikariProxyPreparedStatement.java)
-	at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:194)
-	at org.hibernate.id.insert.GetGeneratedKeysDelegate.performMutation(GetGeneratedKeysDelegate.java:116)
-	at org.hibernate.engine.jdbc.mutation.internal.MutationExecutorSingleNonBatched.performNonBatchedOperations(MutationExecutorSingleNonBatched.java:47)
-	at org.hibernate.engine.jdbc.mutation.internal.AbstractMutationExecutor.execute(AbstractMutationExecutor.java:55)
-	at org.hibernate.persister.entity.mutation.InsertCoordinatorStandard.doStaticInserts(InsertCoordinatorStandard.java:194)
-	at org.hibernate.persister.entity.mutation.InsertCoordinatorStandard.coordinateInsert(InsertCoordinatorStandard.java:132)
-	at org.hibernate.persister.entity.mutation.InsertCoordinatorStandard.insert(InsertCoordinatorStandard.java:95)
-	at org.hibernate.action.internal.EntityIdentityInsertAction.execute(EntityIdentityInsertAction.java:85)
-	at org.hibernate.engine.spi.ActionQueue.execute(ActionQueue.java:682)
-	at org.hibernate.engine.spi.ActionQueue.addResolvedEntityInsertAction(ActionQueue.java:293)
-	at org.hibernate.engine.spi.ActionQueue.addInsertAction(ActionQueue.java:274)
-	at org.hibernate.engine.spi.ActionQueue.addAction(ActionQueue.java:324)
-	at org.hibernate.event.internal.AbstractSaveEventListener.addInsertAction(AbstractSaveEventListener.java:394)
-	at org.hibernate.event.internal.AbstractSaveEventListener.performSaveOrReplicate(AbstractSaveEventListener.java:308)
-	at org.hibernate.event.internal.AbstractSaveEventListener.performSave(AbstractSaveEventListener.java:224)
-	at org.hibernate.event.internal.AbstractSaveEventListener.saveWithGeneratedId(AbstractSaveEventListener.java:136)
-	at org.hibernate.event.internal.DefaultPersistEventListener.entityIsTransient(DefaultPersistEventListener.java:177)
-	at org.hibernate.event.internal.DefaultPersistEventListener.persist(DefaultPersistEventListener.java:95)
-	at org.hibernate.event.internal.DefaultPersistEventListener.onPersist(DefaultPersistEventListener.java:79)
-	at org.hibernate.event.internal.DefaultPersistEventListener.onPersist(DefaultPersistEventListener.java:55)
-	at org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:127)
-	at org.hibernate.internal.SessionImpl.firePersist(SessionImpl.java:761)
-	at org.hibernate.internal.SessionImpl.persist(SessionImpl.java:745)
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
-	at org.springframework.orm.jpa.ExtendedEntityManagerCreator$ExtendedEntityManagerInvocationHandler.invoke(ExtendedEntityManagerCreator.java:364)
-	at jdk.proxy2/jdk.proxy2.$Proxy135.persist(Unknown Source)
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
-	at org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler.invoke(SharedEntityManagerCreator.java:320)
-	at jdk.proxy2/jdk.proxy2.$Proxy135.persist(Unknown Source)
-	at org.springframework.data.jpa.repository.support.SimpleJpaRepository.save(SimpleJpaRepository.java:653)
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
-	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
-	at org.springframework.data.repository.core.support.RepositoryMethodInvoker$RepositoryFragmentMethodInvoker.lambda$new$0(RepositoryMethodInvoker.java:277)
-	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:170)
-	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:158)
-	at org.springframework.data.repository.core.support.RepositoryComposition$RepositoryFragments.invoke(RepositoryComposition.java:515)
-	at org.springframework.data.repository.core.support.RepositoryComposition.invoke(RepositoryComposition.java:284)
-	at org.springframework.data.repository.core.support.RepositoryFactorySupport$ImplementationMethodExecutionInterceptor.invoke(RepositoryFactorySupport.java:734)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
-	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:174)
-	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:149)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
-	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:69)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
-	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)
-	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
-	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
-	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:165)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
-	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223)
-	at jdk.proxy2/jdk.proxy2.$Proxy139.save(Unknown Source)
-	at com.authapp.demo.controller.UserController.createUser(UserController.java:33)
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
-	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
-	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:89)
-	at com.authapp.demo.aop.LoggingAspect.logControllerEndpoint(LoggingAspect.java:22)
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
-	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:642)
-	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:632)
-	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:71)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
-	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
-	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
-	at com.authapp.demo.controller.UserController$$SpringCGLIB$$0.createUser(<generated>)
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
-	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:258)
-	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:191)
-	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
-	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:986)
-	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:891)
-	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
-	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
-	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
-	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
-	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
-	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
-	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
-	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
-	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
-	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
-	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
-	at org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:114)
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
-	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
-	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
-	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
-	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
-	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116)
-	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
-	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
-	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
-	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398)
-	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
-	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
-	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1769)
-	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
-	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189)
-	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
-	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
-	at java.base/java.lang.Thread.run(Thread.java:1583)
-2025-07-16 12:04:52 [INFO ] [com.authapp.demo.aop.LoggingAspect] - Endpoint called: UserController.deleteUser(..) with args: [1]
-2025-07-16 12:04:52 [INFO ] [com.authapp.demo.aop.LoggingAspect] - Endpoint UserController.deleteUser(..) returned: <204 NO_CONTENT No Content,[]>
-2025-07-16 12:05:38 [INFO ] [com.authapp.demo.aop.LoggingAspect] - Endpoint called: UserController.getAllUsers() with args: []
-2025-07-16 12:05:38 [INFO ] [com.authapp.demo.aop.LoggingAspect] - Endpoint UserController.getAllUsers() returned: []
-2025-07-16 12:05:42 [INFO ] [com.authapp.demo.aop.LoggingAspect] - Endpoint called: UserController.createUser(..) with args: [com.authapp.demo.entity.User@124b5d43]
-2025-07-16 12:05:42 [INFO ] [com.authapp.demo.aop.LoggingAspect] - Endpoint UserController.createUser(..) returned: com.authapp.demo.entity.User@124b5d43
-2025-07-16 12:05:48 [INFO ] [com.authapp.demo.aop.LoggingAspect] - Endpoint called: UserController.getAllUsers() with args: []
-2025-07-16 12:05:48 [INFO ] [com.authapp.demo.aop.LoggingAspect] - Endpoint UserController.getAllUsers() returned: [com.authapp.demo.entity.User@4651c631]
-2025-07-16 12:05:56 [INFO ] [org.springframework.boot.web.embedded.tomcat.GracefulShutdown] - Commencing graceful shutdown. Waiting for active requests to complete
-2025-07-16 12:05:56 [INFO ] [org.springframework.boot.web.embedded.tomcat.GracefulShutdown] - Graceful shutdown complete
-2025-07-16 12:05:56 [INFO ] [org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean] - Closing JPA EntityManagerFactory for persistence unit 'default'
-2025-07-16 12:05:56 [INFO ] [com.zaxxer.hikari.HikariDataSource] - HikariPool-1 - Shutdown initiated...
-2025-07-16 12:05:56 [INFO ] [com.zaxxer.hikari.HikariDataSource] - HikariPool-1 - Shutdown completed.
+2025-07-16 16:50:48 [INFO ] [org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator] - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-07-16 16:50:48 [INFO ] [org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean] - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-07-16 16:50:49 [WARN ] [org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration] - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-07-16 16:50:50 [INFO ] [org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver] - Exposing 1 endpoint beneath base path '/actuator'
+2025-07-16 16:50:50 [INFO ] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] - Tomcat started on port 8080 (http) with context path '/'
+2025-07-16 16:50:50 [INFO ] [com.authapp.demo.DemoApplication] - Started DemoApplication in 8.889 seconds (process running for 9.714)
+2025-07-16 16:51:19 [INFO ] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-07-16 16:51:19 [INFO ] [org.springframework.web.servlet.DispatcherServlet] - Initializing Servlet 'dispatcherServlet'
+2025-07-16 16:51:19 [INFO ] [org.springframework.web.servlet.DispatcherServlet] - Completed initialization in 2 ms
+2025-07-16 16:51:19 [INFO ] [com.authapp.demo.aop.LoggingAspect] - Endpoint called: UserController.getAllUsers() with args: []
+2025-07-16 16:51:20 [INFO ] [com.authapp.demo.aop.LoggingAspect] - Endpoint UserController.getAllUsers() returned: [com.authapp.demo.entity.User@3b492e5b, com.authapp.demo.entity.User@5f129915]
+2025-07-16 16:53:26 [INFO ] [org.springframework.boot.web.embedded.tomcat.GracefulShutdown] - Commencing graceful shutdown. Waiting for active requests to complete
+2025-07-16 16:53:26 [INFO ] [org.springframework.boot.web.embedded.tomcat.GracefulShutdown] - Graceful shutdown complete
+2025-07-16 16:53:26 [INFO ] [org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean] - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-07-16 16:53:26 [INFO ] [com.zaxxer.hikari.HikariDataSource] - HikariPool-1 - Shutdown initiated...
+2025-07-16 16:53:26 [INFO ] [com.zaxxer.hikari.HikariDataSource] - HikariPool-1 - Shutdown completed.
