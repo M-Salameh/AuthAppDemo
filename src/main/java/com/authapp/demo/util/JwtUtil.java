@@ -15,7 +15,8 @@ public class JwtUtil {
     /**
      * Secret key used for signing JWT tokens.
      */
-    private static final String SECRET_KEY = "your-very-secret-key";
+    private static final String SECRET_KEY =
+            "CqIBTmqxJqQoJYZ4m7LaxX55PvZCoKDWeDNZb+vfSqVGJ7Jmrdbjb0K7FJCZkndRzuR0DSXaU91vWolIBx+9Rg==";
     /**
      * Expiration time for JWT tokens in milliseconds (1 day).
      */

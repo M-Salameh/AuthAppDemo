@@ -1,0 +1,8 @@
+here we add new annotations which are interfaces which be called starting with "@".
+it is a part of AOP (Aspect Oriented Programming).
+where we can place the annotation to make the code clear and easy to read and spotless.
+then we can add the implementation independently where it is called where ever the interface is invoked.
+that happens by declaring the @Aspect and where to call it - @Around
+Since the spring boot is complex and sophisticated framework , we can get the attributes of a certain
+connection to the HTTP server and extract what we want from it - this is via getAttribute()
+

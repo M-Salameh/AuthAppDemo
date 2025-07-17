@@ -5,13 +5,11 @@ import com.authapp.demo.repository.UserRepository;
 import com.authapp.demo.entity.Vehicle;
 import com.authapp.demo.entity.User;
 import com.authapp.demo.dto.CreateVehicleRequest;
+import com.authapp.demo.security.AdminOnly;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestHeader;
-import com.authapp.demo.util.JwtUtil;
-import io.jsonwebtoken.Claims;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -75,10 +73,8 @@ public class VehicleController {
      * @return the created vehicle, or error if user not found or not admin
      */
     @PostMapping
+    @AdminOnly
     public ResponseEntity<?> createVehicle(@RequestBody CreateVehicleRequest request, @RequestHeader("Authorization") String authHeader) {
-        if (!isAdmin(authHeader)) {
-            return ResponseEntity.status(403).body("Admin access required");
-        }
         Optional<User> userOpt = userRepository.findById(request.getUserId());
         if (userOpt.isEmpty()) {
             return ResponseEntity.badRequest().body("User not found");
@@ -99,10 +95,8 @@ public class VehicleController {
      * @return the updated vehicle, or error if not found, user not found, or not admin
      */
     @PutMapping("/{id}")
+    @AdminOnly
     public ResponseEntity<?> updateVehicle(@PathVariable Long id, @RequestBody CreateVehicleRequest request, @RequestHeader("Authorization") String authHeader) {
-        if (!isAdmin(authHeader)) {
-            return ResponseEntity.status(403).body("Admin access required");
-        }
         Optional<User> userOpt = userRepository.findById(request.getUserId());
         if (userOpt.isEmpty()) {
             return ResponseEntity.badRequest().body("User not found");
@@ -125,25 +119,13 @@ public class VehicleController {
      * @return 204 No Content if deleted, 404 if not found, or 403 if not admin
      */
     @DeleteMapping("/{id}")
+    @AdminOnly
     public ResponseEntity<?> deleteVehicle(@PathVariable Long id, @RequestHeader("Authorization") String authHeader) {
-        if (!isAdmin(authHeader)) {
-            return ResponseEntity.status(403).body("Admin access required");
-        }
         if (vehicleRepository.existsById(id)) {
             vehicleRepository.deleteById(id);
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
         }
-    }
-
-    /**
-     * Helper method to check if the user is an admin based on the JWT token.
-     *
-     * @param authHeader the Authorization header containing the JWT token
-     * @return true if the user is an admin, false otherwise
-     */
-    private boolean isAdmin(String authHeader) {
-        return JwtUtil.isAdmin(authHeader);
     }
 } 
