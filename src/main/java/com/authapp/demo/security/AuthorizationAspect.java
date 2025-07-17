@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -18,6 +20,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 public class AuthorizationAspect {
     @Autowired
     private UserRepository userRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthorizationAspect.class);
+
     @Around("@annotation(com.authapp.demo.security.AdminOnly)")
     public Object checkAdmin(ProceedingJoinPoint joinPoint) throws Throwable {
         String authHeader = getAuthHeader();
@@ -35,20 +40,21 @@ public class AuthorizationAspect {
         Long userId = null;
         // Try to extract username or userId from arguments
         for (Object arg : args) {
-            if (arg instanceof String) {
-                username = (String) arg;
-            } else if (arg instanceof Long) {
+             if (arg instanceof Long) {
                 userId = (Long) arg;
             }
         }
-        if (username == null && userId == null){
+        if (userId == null){
+            logger.error("Username or userId not found in arguments");
             throw new RuntimeException("Username or userId not found in arguments");
         }
         // If username is not found, try to get it from userId (if available)
-        if (username == null && userId != null) {
+        if (userId != null) {
+            logger.warn("username is null and id not null = {}", userId);
             username = userRepository.findById(userId).map(User::getUsername).orElse(null);
+            logger.warn("username fetched from db for id = {} is {}", userId, username);
         }
-        if (!JwtUtil.isAdmin(authHeader) && (username == null || !JwtUtil.isSelf(authHeader, username))) {
+        if (!JwtUtil.isAdmin(authHeader) &&  !JwtUtil.isSelf(authHeader, username)) {
             return ResponseEntity.status(403).body("Not authorized");
         }
         return joinPoint.proceed();
