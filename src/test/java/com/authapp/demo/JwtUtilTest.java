@@ -54,55 +54,46 @@ class JwtUtilTest {
     }
 
     @Test
-    void testAdminToken() {
-        // Create an admin user
-        User adminUser = new User();
-        adminUser.setId(2L);
-        adminUser.setUsername("admin");
-        adminUser.setPassword("password");
-        adminUser.setRole(Role.ADMIN);
-
-        // Generate token
-        String token = jwtUtil.generateToken(adminUser);
-        String authHeader = "Bearer " + token;
-
-        // Test admin check
-        assertTrue(jwtUtil.isAdmin(authHeader));
-    }
-
-    @Test
-    void testSelfCheck() {
-        // Create a user
+    void testTokenExpiration() {
+        // Create a test user
         User user = new User();
-        user.setId(3L);
+        user.setId(1L);
         user.setUsername("testuser");
         user.setPassword("password");
         user.setRole(Role.USER);
 
         // Generate token
         String token = jwtUtil.generateToken(user);
-        String authHeader = "Bearer " + token;
-
-        // Test self check
-        assertTrue(jwtUtil.isSelf(authHeader, "testuser"));
-        assertFalse(jwtUtil.isSelf(authHeader, "otheruser"));
+        
+        // Token should not be expired immediately
+        assertFalse(jwtUtil.isTokenExpired(token));
+        
+        // Test with invalid token
+        assertTrue(jwtUtil.isTokenExpired("invalid.token"));
     }
 
     @Test
-    void testRoleCheck() {
-        // Create a user with specific role
+    void testTokenValidationForUser() {
+        // Create a test user
         User user = new User();
-        user.setId(4L);
-        user.setUsername("manager");
+        user.setId(1L);
+        user.setUsername("testuser");
         user.setPassword("password");
-        user.setRole(Role.ADMIN);
+        user.setRole(Role.USER);
 
         // Generate token
         String token = jwtUtil.generateToken(user);
-        String authHeader = "Bearer " + token;
-
-        // Test role check
-        assertTrue(jwtUtil.hasRole(authHeader, "ADMIN"));
-        assertFalse(jwtUtil.hasRole(authHeader, "USER"));
+        
+        // Token should be valid for the user
+        assertTrue(jwtUtil.isTokenValid(token, user));
+        
+        // Test with different user
+        User differentUser = new User();
+        differentUser.setId(2L);
+        differentUser.setUsername("differentuser");
+        differentUser.setPassword("password");
+        differentUser.setRole(Role.USER);
+        
+        assertFalse(jwtUtil.isTokenValid(token, differentUser));
     }
 } 

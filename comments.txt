@@ -9,5 +9,33 @@ but now it works as filter (can process or do not even bother).
 
 Authentication in Security Context Holder is Object that contains info like : username - role - jwt
 
+now we will use the security context to check for authentication and authorization.
+it is compatible for @PreAuthorize annotation.
+the @PreAuhorize annotation is used to check for authorization before continuing.
+it checks id the current request has the role we want to permit.
+Authentication Structure :
+{
+    principal: UserDetails {
+        username: "admin"
+        password: "[PROTECTED]"
+        authorities: [ROLE_ADMIN]
+    }
+    credentials: null  // ← Usually null for security
+    authorities: [ROLE_ADMIN]
+    details: WebAuthenticationDetails {
+        remoteAddress: "192.168.1.100"
+        sessionId: null  // ← Stateless
+    }
+    authenticated: true
+}
+the authorities is written as "ROLE_"+(role name) and this is what we check for in @PreAuthorize.
+this object is the object we set when filtering requests.
 
+we will use the spring's authz annotation now:
+@PreAuthorize
+which uses the Authentication Object which can only be acquired by implementing
+AuthenticationProvider interface and in we must add The Authenticator Manager in Config
+so it detects the bean for security and how to handle it.
 
+the isSelf now we need to workaround it , we will implement it using CustomUSerDetails
+that will fit as principal object inside the Authentication with the id of user.

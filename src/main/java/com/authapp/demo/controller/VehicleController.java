@@ -5,11 +5,11 @@ import com.authapp.demo.repository.UserRepository;
 import com.authapp.demo.entity.Vehicle;
 import com.authapp.demo.entity.User;
 import com.authapp.demo.dto.CreateVehicleRequest;
-import com.authapp.demo.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RequestHeader;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -20,127 +20,98 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/vehicles")
 public class VehicleController {
-    /**
-     * Repository for vehicle data access.
-     */
+
     @Autowired
     private VehicleRepository vehicleRepository;
 
-    /**
-     * Repository for user data access.
-     */
     @Autowired
     private UserRepository userRepository;
 
     /**
-     * JWT utility component for token operations.
-     */
-    @Autowired
-    private JwtUtil jwtUtil;
-
-    /**
-     * Get all vehicles in the system.
-     *
-     * @return list of all vehicles
+     * Get all vehicles (admin only)
      */
     @GetMapping
-    public List<Vehicle> getAllVehicles() {
-        return vehicleRepository.findAll();
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<Vehicle>> getAllVehicles() {
+        List<Vehicle> vehicles = vehicleRepository.findAll();
+        return ResponseEntity.ok(vehicles);
     }
 
     /**
-     * Get all vehicles belonging to a specific user.
-     *
-     * @param userId the ID of the user
-     * @return list of vehicles for the user
-     */
-    @GetMapping("/user/{userId}")
-    public List<Vehicle> getVehiclesByUser(@PathVariable Long userId) {
-        return vehicleRepository.findByUserId(userId);
-    }
-
-    /**
-     * Get a vehicle by its ID.
-     *
-     * @param id the ID of the vehicle
-     * @return the vehicle if found, or 404 if not found
+     * Get vehicle by ID (admin or owner)
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or @vehicleRepository.findById(#id).orElse(null)?.getUser()?.getId() == authentication.principal.id")
     public ResponseEntity<Vehicle> getVehicleById(@PathVariable Long id) {
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);
-        return vehicle.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return vehicle.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     /**
-     * Create a new vehicle. Only accessible by admins.
-     *
-     * @param request the vehicle creation request containing plate, model, and userId
-     * @param authHeader the Authorization header containing the JWT token
-     * @return the created vehicle, or error if user not found or not admin
+     * Create new vehicle (admin or user can create for themselves)
      */
     @PostMapping
-    public ResponseEntity<?> createVehicle(@RequestBody CreateVehicleRequest request, @RequestHeader("Authorization") String authHeader) {
-        if (!jwtUtil.isAdmin(authHeader)) {
-            return ResponseEntity.status(403).body("Admin access required");
+    @PreAuthorize("hasRole('ADMIN') or #request.userId == authentication.principal.id")
+    public ResponseEntity<Vehicle> createVehicle(@RequestBody CreateVehicleRequest request) {
+        Optional<User> user = userRepository.findById(request.getUserId());
+        if (user.isEmpty()) {
+            return ResponseEntity.badRequest().build();
         }
-        
-        Optional<User> userOpt = userRepository.findById(request.getUserId());
-        if (userOpt.isEmpty()) {
-            return ResponseEntity.badRequest().body("User not found");
-        }
+
         Vehicle vehicle = new Vehicle();
         vehicle.setPlate(request.getPlate());
         vehicle.setModel(request.getModel());
-        vehicle.setUser(userOpt.get());
-        return ResponseEntity.ok(vehicleRepository.save(vehicle));
+        vehicle.setUser(user.get());
+
+        Vehicle savedVehicle = vehicleRepository.save(vehicle);
+        return ResponseEntity.ok(savedVehicle);
     }
 
     /**
-     * Update an existing vehicle. Only accessible by admins.
-     *
-     * @param id the ID of the vehicle to update
-     * @param request the vehicle update request containing plate, model, and userId
-     * @param authHeader the Authorization header containing the JWT token
-     * @return the updated vehicle, or error if not found, user not found, or not admin
+     * Update vehicle (admin or owner)
      */
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateVehicle(@PathVariable Long id, @RequestBody CreateVehicleRequest request, @RequestHeader("Authorization") String authHeader) {
-        if (!jwtUtil.isAdmin(authHeader)) {
-            return ResponseEntity.status(403).body("Admin access required");
+    @PreAuthorize("hasRole('ADMIN') or @vehicleRepository.findById(#id).orElse(null)?.getUser()?.getId() == authentication.principal.id")
+    public ResponseEntity<Vehicle> updateVehicle(@PathVariable Long id, @RequestBody Vehicle vehicleDetails) {
+        Optional<Vehicle> vehicleOpt = vehicleRepository.findById(id);
+        if (vehicleOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
-        
-        Optional<User> userOpt = userRepository.findById(request.getUserId());
-        if (userOpt.isEmpty()) {
-            return ResponseEntity.badRequest().body("User not found");
-        }
-        return vehicleRepository.findById(id)
-                .map(vehicle -> {
-                    vehicle.setPlate(request.getPlate());
-                    vehicle.setModel(request.getModel());
-                    vehicle.setUser(userOpt.get());
-                    return ResponseEntity.ok(vehicleRepository.save(vehicle));
-                })
-                .orElseGet(() -> ResponseEntity.notFound().build());
+
+        Vehicle vehicle = vehicleOpt.get();
+        vehicle.setPlate(vehicleDetails.getPlate());
+        vehicle.setModel(vehicleDetails.getModel());
+
+        Vehicle updatedVehicle = vehicleRepository.save(vehicle);
+        return ResponseEntity.ok(updatedVehicle);
     }
 
     /**
-     * Delete a vehicle by its ID. Only accessible by admins.
-     *
-     * @param id the ID of the vehicle to delete
-     * @param authHeader the Authorization header containing the JWT token
-     * @return 204 No Content if deleted, 404 if not found, or 403 if not admin
+     * Delete vehicle (admin or owner)
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteVehicle(@PathVariable Long id, @RequestHeader("Authorization") String authHeader) {
-        if (!jwtUtil.isAdmin(authHeader)) {
-            return ResponseEntity.status(403).body("Admin access required");
-        }
-        
-        if (vehicleRepository.existsById(id)) {
-            vehicleRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        } else {
+    @PreAuthorize("hasRole('ADMIN') or @vehicleRepository.findById(#id).orElse(null)?.getUser()?.getId() == authentication.principal.id")
+    public ResponseEntity<Void> deleteVehicle(@PathVariable Long id) {
+        if (!vehicleRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
+        vehicleRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Get vehicles by owner ID (admin or self)
+     */
+    @GetMapping("/owner/{userId}")
+    @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id")
+    public ResponseEntity<List<Vehicle>> getVehiclesByOwner(@PathVariable Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        List<Vehicle> vehicles = vehicleRepository.findByUserId(userId);
+        return ResponseEntity.ok(vehicles);
     }
 } 

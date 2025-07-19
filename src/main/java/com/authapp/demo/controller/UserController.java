@@ -5,20 +5,14 @@ import com.authapp.demo.entity.User;
 import com.authapp.demo.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-//import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
-import org.springframework.web.bind.annotation.RequestHeader;
-import com.authapp.demo.entity.User.Role;
 
 /**
  * REST controller for managing users.
@@ -27,129 +21,109 @@ import com.authapp.demo.entity.User.Role;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-    /**
-     * Repository for user data access.
-     */
+
     @Autowired
     private UserRepository userRepository;
 
-    /**
-     * JWT utility component for token operations.
-     */
     @Autowired
     private JwtUtil jwtUtil;
 
-    //private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
     /**
-     * Authenticates a user and generates a JWT token if credentials are valid.
-     *
-     * @param loginRequest a map containing username and password
-     * @return a JWT token if authentication is successful, or 401 if invalid credentials
+     * Authenticate user and return JWT token
      */
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> loginRequest) {
         String username = loginRequest.get("username");
         String password = loginRequest.get("password");
-        Optional<User> userOpt = userRepository.findByUsername(username);
-        if (userOpt.isPresent()) {
-            User user = userOpt.get();
-           // if (passwordEncoder.matches(password, user.getPassword())) {
-            if (password.equals(user.getPassword())) {
-                String token = jwtUtil.generateToken(user);
-                Map<String, String> response = new HashMap<>();
-                response.put("token", token);
-                return ResponseEntity.ok(response);
-            }
+
+        if (username == null || password == null) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Username and password are required"));
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+
+        Optional<User> userOpt = userRepository.findByUsername(username);
+        if (userOpt.isEmpty() || !userOpt.get().getPassword().equals(password)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Invalid username or password"));
+        }
+
+        User user = userOpt.get();
+        String token = jwtUtil.generateToken(user);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("token", token);
+        response.put("user", Map.of(
+                "id", user.getId(),
+                "username", user.getUsername(),
+                "role", user.getRole()
+        ));
+
+        return ResponseEntity.ok(response);
     }
 
     /**
-     * Retrieves all users in the system.
-     *
-     * @return list of all users
+     * Get all users (admin only)
      */
     @GetMapping
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return ResponseEntity.ok(users);
     }
 
     /**
-     * Retrieves a user by their ID.
-     *
-     * @param id the ID of the user
-     * @return the user if found, or 404 if not found
+     * Get user by ID (admin or self)
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         Optional<User> user = userRepository.findById(id);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return user.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     /**
-     * Creates a new user. Only accessible by admins.
-     *
-     * @param user the user to create
-     * @param authHeader the Authorization header containing the JWT token
-     * @return the created user, or error if not admin
+     * Create new user (admin only)
      */
     @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody User user, @RequestHeader("Authorization") String authHeader) {
-        if (!jwtUtil.isAdmin(authHeader)) {
-            return ResponseEntity.status(403).body("Admin access required");
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            return ResponseEntity.badRequest().build();
         }
-        
-        // Hash password before saving
-        user.setPassword(user.getPassword());
-        // Ensure role is set from string if needed
-        if (user.getRole() == null && user instanceof Map) {
-            Object roleObj = ((Map<?, ?>)user).get("role");
-            if (roleObj != null) user.setRole(Role.valueOf(roleObj.toString()));
-        }
-        return ResponseEntity.ok(userRepository.save(user));
+        User savedUser = userRepository.save(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
     /**
-     * Updates an existing user. Only accessible by admins or the user themselves.
-     *
-     * @param id the ID of the user to update
-     * @param userDetails the updated user details
-     * @param authHeader the Authorization header containing the JWT token
-     * @return the updated user, or error if not authorized or not found
+     * Update user (admin or self)
      */
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User userDetails, @RequestHeader("Authorization") String authHeader) {
-        return userRepository.findById(id)
-                .map(user -> {
-                    if (!jwtUtil.isAdmin(authHeader) && !jwtUtil.isSelf(authHeader, user.getUsername())) {
-                        return ResponseEntity.status(403).body("Not authorized - not admin nor the same user");
-                    }
-                    user.setUsername(userDetails.getUsername());
-                    user.setPassword((userDetails.getPassword()));
-                    user.setRole(userDetails.getRole());
-                    return ResponseEntity.ok(userRepository.save(user));
-                })
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
+        Optional<User> userOpt = userRepository.findById(id);
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        User user = userOpt.get();
+        user.setUsername(userDetails.getUsername());
+        user.setPassword(userDetails.getPassword());
+        user.setRole(userDetails.getRole());
+
+        User updatedUser = userRepository.save(user);
+        return ResponseEntity.ok(updatedUser);
     }
 
     /**
-     * Deletes a user by their ID. Only accessible by admins or the user themselves.
-     *
-     * @param id the ID of the user to delete
-     * @param authHeader the Authorization header containing the JWT token
-     * @return 204 No Content if deleted, 404 if not found, or 403 if not authorized
+     * Delete user (admin only)
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable Long id, @RequestHeader("Authorization") String authHeader) {
-        return userRepository.findById(id)
-                .map(user -> {
-                    if (!jwtUtil.isAdmin(authHeader) && !jwtUtil.isSelf(authHeader, user.getUsername())) {
-                        return ResponseEntity.status(403).body("Not authorized");
-                    }
-                    userRepository.deleteById(id);
-                    return ResponseEntity.noContent().build();
-                })
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        if (!userRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        userRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 } 

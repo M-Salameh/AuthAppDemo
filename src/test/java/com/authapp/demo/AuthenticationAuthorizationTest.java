@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
     "spring.datasource.driverClassName=org.h2.Driver",
     "spring.jpa.hibernate.ddl-auto=create-drop"
 })
-class SimpleAuthenticationTest {
+class AuthenticationAuthorizationTest {
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -41,36 +41,50 @@ class SimpleAuthenticationTest {
     }
 
     @Test
-    void testValidJWT_AdminAccess_ShouldSucceed() {
+    void testValidJWT_AdminUser_ShouldSucceed() {
         String token = jwtUtil.generateToken(adminUser);
-        String authHeader = "Bearer " + token;
-
-        assertTrue(jwtUtil.isAdmin(authHeader), "Admin user should have admin access");
-        assertTrue(jwtUtil.hasRole(authHeader, "ADMIN"), "Admin user should have ADMIN role");
+        
+        assertTrue(jwtUtil.validateToken(token), "Admin user token should be valid");
+        assertEquals("admin", jwtUtil.extractUsername(token), "Username should match");
+        assertEquals("ADMIN", jwtUtil.extractRole(token), "Role should be ADMIN");
+        assertTrue(jwtUtil.isTokenValid(token, adminUser), "Token should be valid for admin user");
     }
 
     @Test
-    void testValidJWT_UserAccessingAdminEndpoint_ShouldFail() {
+    void testValidJWT_RegularUser_ShouldSucceed() {
         String token = jwtUtil.generateToken(regularUser);
-        String authHeader = "Bearer " + token;
-
-        assertFalse(jwtUtil.isAdmin(authHeader), "Regular user should not have admin access");
-        assertTrue(jwtUtil.hasRole(authHeader, "USER"), "Regular user should have USER role");
+        
+        assertTrue(jwtUtil.validateToken(token), "Regular user token should be valid");
+        assertEquals("user1", jwtUtil.extractUsername(token), "Username should match");
+        assertEquals("USER", jwtUtil.extractRole(token), "Role should be USER");
+        assertTrue(jwtUtil.isTokenValid(token, regularUser), "Token should be valid for regular user");
     }
 
     @Test
     void testInvalidJWT_ShouldFail() {
-        String invalidAuthHeader = "Bearer invalid.jwt.token";
+        String invalidToken = "invalid.jwt.token";
 
-        assertFalse(jwtUtil.isAdmin(invalidAuthHeader), "Invalid JWT should fail admin check");
-        assertFalse(jwtUtil.hasRole(invalidAuthHeader, "ADMIN"), "Invalid JWT should fail role check");
+        assertFalse(jwtUtil.validateToken(invalidToken), "Invalid JWT should fail validation");
+        assertNull(jwtUtil.extractUsername(invalidToken), "Invalid JWT should return null username");
+        assertNull(jwtUtil.extractRole(invalidToken), "Invalid JWT should return null role");
     }
 
     @Test
-    void testMissingJWT_ShouldFail() {
-        String authHeader = null;
+    void testNullJWT_ShouldFail() {
+        assertFalse(jwtUtil.validateToken(null), "Null JWT should fail validation");
+        assertNull(jwtUtil.extractUsername(null), "Null JWT should return null username");
+        assertNull(jwtUtil.extractRole(null), "Null JWT should return null role");
+    }
 
-        assertFalse(jwtUtil.isAdmin(authHeader), "Missing JWT should fail admin check");
-        assertFalse(jwtUtil.hasRole(authHeader, "ADMIN"), "Missing JWT should fail role check");
+    @Test
+    void testTokenCrossValidation_ShouldFail() {
+        String adminToken = jwtUtil.generateToken(adminUser);
+        String userToken = jwtUtil.generateToken(regularUser);
+        
+        // Admin token should not be valid for regular user
+        assertFalse(jwtUtil.isTokenValid(adminToken, regularUser), "Admin token should not be valid for regular user");
+        
+        // User token should not be valid for admin user
+        assertFalse(jwtUtil.isTokenValid(userToken, adminUser), "User token should not be valid for admin user");
     }
 } 
