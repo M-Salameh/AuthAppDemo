@@ -1,3 +1,13 @@
 we will use spring's provided security context.
 to make this happens we need to use the security dependency and configure it by defining
 security beans and implementing our security (AuthZ) logic in it.
+
+the SecurityConfig is necessary to declare beans of web security type.
+we add filter to it to decide on http request level whether to set Authentication or not.
+and decides whether to allow the request or not. (still there is rules for admin and users)
+but now it works as filter (can process or do not even bother).
+
+Authentication in Security Context Holder is Object that contains info like : username - role - jwt
+
+
+

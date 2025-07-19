@@ -123,7 +123,7 @@ public class UserController {
         return userRepository.findById(id)
                 .map(user -> {
                     if (!jwtUtil.isAdmin(authHeader) && !jwtUtil.isSelf(authHeader, user.getUsername())) {
-                        return ResponseEntity.status(403).body("Not authorized");
+                        return ResponseEntity.status(403).body("Not authorized - not admin nor the same user");
                     }
                     user.setUsername(userDetails.getUsername());
                     user.setPassword((userDetails.getPassword()));
