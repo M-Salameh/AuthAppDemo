@@ -1,0 +1,5 @@
+we modified the dependency we used and secret-key despite it used to work earlier
+the problem was json parsing for when sending a Map as body request - Json Problem.
+the version 0.9 had this problem , but it allowed us to use dummy secret key.
+the new version 0.11 does not create problems with parsing but has more limitations
+on secret-key as the dash ("-") is not allowed.
