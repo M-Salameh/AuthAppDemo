@@ -2,6 +2,7 @@ package com.authapp.demo.controller;
 
 import com.authapp.demo.repository.UserRepository;
 import com.authapp.demo.entity.User;
+import com.authapp.demo.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,16 +12,12 @@ import java.util.Optional;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
-import com.authapp.demo.util.JwtUtil;
 import org.springframework.web.bind.annotation.RequestHeader;
-import com.authapp.demo.util.JwtUtil;
-import io.jsonwebtoken.Claims;
 import com.authapp.demo.entity.User.Role;
 
 /**
@@ -35,6 +32,12 @@ public class UserController {
      */
     @Autowired
     private UserRepository userRepository;
+
+    /**
+     * JWT utility component for token operations.
+     */
+    @Autowired
+    private JwtUtil jwtUtil;
 
     //private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -53,7 +56,7 @@ public class UserController {
             User user = userOpt.get();
            // if (passwordEncoder.matches(password, user.getPassword())) {
             if (password.equals(user.getPassword())) {
-                String token = JwtUtil.generateToken(user);
+                String token = jwtUtil.generateToken(user);
                 Map<String, String> response = new HashMap<>();
                 response.put("token", token);
                 return ResponseEntity.ok(response);
@@ -93,12 +96,11 @@ public class UserController {
      */
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody User user, @RequestHeader("Authorization") String authHeader) {
-        // TODO: Hash password before saving
-        if (!isAdmin(authHeader)) {
+        if (!jwtUtil.isAdmin(authHeader)) {
             return ResponseEntity.status(403).body("Admin access required");
         }
+        
         // Hash password before saving
-        //user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setPassword(user.getPassword());
         // Ensure role is set from string if needed
         if (user.getRole() == null && user instanceof Map) {
@@ -120,11 +122,10 @@ public class UserController {
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User userDetails, @RequestHeader("Authorization") String authHeader) {
         return userRepository.findById(id)
                 .map(user -> {
-                    if (!isAdmin(authHeader) && !isSelf(authHeader, user.getUsername())) {
+                    if (!jwtUtil.isAdmin(authHeader) && !jwtUtil.isSelf(authHeader, user.getUsername())) {
                         return ResponseEntity.status(403).body("Not authorized");
                     }
                     user.setUsername(userDetails.getUsername());
-                   // user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
                     user.setPassword((userDetails.getPassword()));
                     user.setRole(userDetails.getRole());
                     return ResponseEntity.ok(userRepository.save(user));
@@ -143,33 +144,12 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@PathVariable Long id, @RequestHeader("Authorization") String authHeader) {
         return userRepository.findById(id)
                 .map(user -> {
-                    if (!isAdmin(authHeader) && !isSelf(authHeader, user.getUsername())) {
+                    if (!jwtUtil.isAdmin(authHeader) && !jwtUtil.isSelf(authHeader, user.getUsername())) {
                         return ResponseEntity.status(403).body("Not authorized");
                     }
                     userRepository.deleteById(id);
                     return ResponseEntity.noContent().build();
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    /**
-     * Helper method to check if the user is an admin based on the JWT token.
-     *
-     * @param authHeader the Authorization header containing the JWT token
-     * @return true if the user is an admin, false otherwise
-     */
-    private boolean isAdmin(String authHeader) {
-        return JwtUtil.isAdmin(authHeader);
-    }
-
-    /**
-     * Helper method to check if the user is the same as the username in the JWT token.
-     *
-     * @param authHeader the Authorization header containing the JWT token
-     * @param username the username to check
-     * @return true if the user is the same as the username in the token, false otherwise
-     */
-    private boolean isSelf(String authHeader, String username) {
-        return JwtUtil.isSelf(authHeader , username);
     }
 } 
